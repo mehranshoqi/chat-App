@@ -1,4 +1,5 @@
 import 'package:chatApp/widgets/chat/bubble.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -27,6 +28,7 @@ class Messages extends StatelessWidget {
           itemCount: chatSnapshot.data.docs.length,
           itemBuilder: (ctx, item) => Bubble(
             chatDocs[item]['text'],
+            chatDocs[item]['userId'],
           ),
         );
       },
