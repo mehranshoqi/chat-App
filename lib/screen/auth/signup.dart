@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../model/auth/signup_model.dart';
 import '../../services/auth.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../animation/FadeAnimation.dart';
 import '../../route/routes.dart';
 
@@ -38,7 +38,11 @@ class _SignupScreen extends State<SignupScreen> {
       print("NULL RESPONSE!");
     } else {
       print("SIGNIN :D");
-      print(res);
+      print(res.uid);
+      FirebaseFirestore.instance
+          .collection('uesr')
+          .doc(res.uid)
+          .set({'email': res.email});
     }
   }
 
@@ -78,7 +82,9 @@ class _SignupScreen extends State<SignupScreen> {
                       Text(
                         "Sign up",
                         style: TextStyle(
-                            fontSize: 30, fontWeight: FontWeight.bold),
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                        ),
                       )),
                   SizedBox(
                     height: 20,
@@ -87,7 +93,10 @@ class _SignupScreen extends State<SignupScreen> {
                     1.2,
                     Text(
                       "Create an account, It's free",
-                      style: TextStyle(fontSize: 15, color: Colors.grey[700]),
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: Colors.grey[700],
+                      ),
                     ),
                   ),
                 ],
@@ -121,7 +130,7 @@ class _SignupScreen extends State<SignupScreen> {
                           },
                           onSaved: (value) {
                             _signupModel = SignupModel(
-                              email: value,
+                              email: value.trim(),
                               password: _signupModel.password,
                               confirmPassword: _signupModel.confirmPassword,
                             );
@@ -149,8 +158,8 @@ class _SignupScreen extends State<SignupScreen> {
                               return 'required *';
                             }
                             if (!RegExp(
-                                    r"^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&;*_=+-]).{8,12}$")
-                                .hasMatch(value)) {
+                              r"^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&;*_=+-]).{8,12}$",
+                            ).hasMatch(value)) {
                               return 'invalide password';
                             }
                             return null;
@@ -158,12 +167,15 @@ class _SignupScreen extends State<SignupScreen> {
                           keyboardType: TextInputType.number,
                           onSaved: (value) {
                             _signupModel = SignupModel(
-                                email: _signupModel.email,
-                                password: value,
-                                confirmPassword: _signupModel.confirmPassword);
+                              email: _signupModel.email,
+                              password: value.trim(),
+                              confirmPassword: _signupModel.confirmPassword,
+                            );
                           },
-                          onFieldSubmitted: (_) => FocusScope.of(context)
-                              .requestFocus(_confirmPasswordFocusNode),
+                          onFieldSubmitted: (_) =>
+                              FocusScope.of(context).requestFocus(
+                            _confirmPasswordFocusNode,
+                          ),
                         ),
                       ),
                       SizedBox(
@@ -186,8 +198,8 @@ class _SignupScreen extends State<SignupScreen> {
                             //   return 'Not match!';
                             // }
                             if (!RegExp(
-                                    r"^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&;*_=+-]).{8,12}$")
-                                .hasMatch(value)) {
+                              r"^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&;*_=+-]).{8,12}$",
+                            ).hasMatch(value)) {
                               return 'invalide password';
                             }
                             return null;
@@ -195,13 +207,15 @@ class _SignupScreen extends State<SignupScreen> {
                           keyboardType: TextInputType.number,
                           onSaved: (value) {
                             _signupModel = SignupModel(
-                                email: _signupModel.email,
-                                password: _signupModel.password,
-                                confirmPassword: value);
+                              email: _signupModel.email,
+                              password: _signupModel.password,
+                              confirmPassword: value.trim(),
+                            );
                           },
                           onFieldSubmitted: (_) => {
-                            FocusScope.of(context)
-                                .requestFocus(_signupButtonFocusNode),
+                            FocusScope.of(context).requestFocus(
+                              _signupButtonFocusNode,
+                            ),
                             _form.currentState.validate(),
                             validated = _form.currentState.validate(),
                           },
@@ -214,9 +228,14 @@ class _SignupScreen extends State<SignupScreen> {
               FadeAnimation(
                 1.4,
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 40),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 40,
+                  ),
                   child: Container(
-                    padding: EdgeInsets.only(top: 3, left: 3),
+                    padding: EdgeInsets.only(
+                      top: 3,
+                      left: 3,
+                    ),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(50),
                       border: Border(
@@ -230,8 +249,7 @@ class _SignupScreen extends State<SignupScreen> {
                       focusNode: _signupButtonFocusNode,
                       minWidth: double.infinity,
                       height: 60,
-                      onPressed: () =>
-                          _form.currentState.validate() ? _submitForm() : null,
+                      onPressed: () => validated ? _submitForm() : null,
                       color: validated
                           ? Theme.of(context).primaryColor
                           : Colors.grey[400],

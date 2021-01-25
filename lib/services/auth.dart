@@ -13,9 +13,7 @@ class AuthServices {
       dynamic user = res.user;
       return user;
     } catch (err) {
-      print(
-        err.toString(),
-      );
+      print(err.toString());
       return null;
     }
   }
@@ -30,18 +28,4 @@ class AuthServices {
       return null;
     }
   }
-
-  // Future signInWithEmailAndPassword(SigninModel signinModel) async {
-  //   try {
-  //     dynamic res = await _auth.signInWithEmailAndPassword(
-  //       email: signinModel.email,
-  //       password: signinModel.password,
-  //     );
-  //     dynamic user = res.user;
-  //     return user;
-  //   } catch (err) {
-  //     print(err);
-  //     return null;
-  //   }
-  // }
 }

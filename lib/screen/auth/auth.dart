@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import '../../redux/app_state.dart';
+import '../../redux/auth/auth_action.dart';
 import '../../services/auth.dart';
 import '../../animation/FadeAnimation.dart';
 import '../../route/routes.dart';
-
 
 class AuthScreen extends StatefulWidget {
   @override
@@ -139,42 +141,41 @@ class _AuthScreenState extends State<AuthScreen> {
                     FadeAnimation(
                       2,
                       MaterialButton(
-                        onPressed: () {},
-                        // onPressed: () async {
-                        //   var user = await _auth.signInAnonymously();
-                        //   if (user == null) {
-                        //     return null;
-                        //   } else {
-                        //     print(user);
-                        //     StoreProvider.of<AppState>(context).dispatch(
-                        //       AnymousSigninAction(user),
-                        //     );
-                        //     Navigator.of(context).push(
-                        //       PageRouteBuilder(
-                        //         transitionDuration:
-                        //             Duration(milliseconds: 900),
-                        //         transitionsBuilder: (
-                        //           BuildContext context,
-                        //           Animation<double> animation,
-                        //           Animation<double> secondaryAnimation,
-                        //           Widget child,
-                        //         ) {
-                        //           return FadeTransition(
-                        //             opacity: animation,
-                        //             child: child,
-                        //           );
-                        //         },
-                        //         pageBuilder: (
-                        //           BuildContext context,
-                        //           Animation<double> animation,
-                        //           Animation<double> secondaryAnimation,
-                        //         ) {
-                        //           return HomeScreen();
-                        //         },
-                        //       ),
-                        //     );
-                        //   }
-                        // },
+                        onPressed: () async {
+                          var user = await _auth.signInAnonymously();
+                          if (user == null) {
+                            return null;
+                          } else {
+                            print(user);
+                            StoreProvider.of<AppState>(context).dispatch(
+                              AnymousSigninAction(user.uid),
+                            );
+                            // Navigator.of(context).push(
+                            //   PageRouteBuilder(
+                            //     transitionDuration:
+                            //         Duration(milliseconds: 900),
+                            //     transitionsBuilder: (
+                            //       BuildContext context,
+                            //       Animation<double> animation,
+                            //       Animation<double> secondaryAnimation,
+                            //       Widget child,
+                            //     ) {
+                            //       return FadeTransition(
+                            //         opacity: animation,
+                            //         child: child,
+                            //       );
+                            //     },
+                            //     pageBuilder: (
+                            //       BuildContext context,
+                            //       Animation<double> animation,
+                            //       Animation<double> secondaryAnimation,
+                            //     ) {
+                            //       return HomeScreen();
+                            //     },
+                            //   ),
+                            // );
+                          }
+                        },
                         child: Text(
                           'continue as Guest',
                           style: TextStyle(
