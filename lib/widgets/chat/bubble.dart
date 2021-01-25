@@ -10,13 +10,6 @@ class Bubble extends StatelessWidget {
       children: [
         Container(
           margin:
-              // isMe
-              //     ? EdgeInsets.only(
-              //         top: 8.0,
-              //         bottom: 8.0,
-              //         left: 80.0,
-              //       )
-              //     :
               EdgeInsets.only(
             top: 8.0,
             bottom: 8.0,
