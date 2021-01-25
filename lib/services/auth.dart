@@ -1,5 +1,5 @@
-import '../model/auth/signup_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../model/auth/signup_model.dart';
 
 class AuthServices {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -36,5 +36,11 @@ class AuthServices {
       print(err.toString());
       return null;
     }
+  }
+
+  authStateChanges() {
+    try {
+      _auth.authStateChanges();
+    } catch (err) {}
   }
 }

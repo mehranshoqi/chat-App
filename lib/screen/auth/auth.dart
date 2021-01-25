@@ -150,30 +150,6 @@ class _AuthScreenState extends State<AuthScreen> {
                             StoreProvider.of<AppState>(context).dispatch(
                               AnymousSigninAction(user.uid),
                             );
-                            // Navigator.of(context).push(
-                            //   PageRouteBuilder(
-                            //     transitionDuration:
-                            //         Duration(milliseconds: 900),
-                            //     transitionsBuilder: (
-                            //       BuildContext context,
-                            //       Animation<double> animation,
-                            //       Animation<double> secondaryAnimation,
-                            //       Widget child,
-                            //     ) {
-                            //       return FadeTransition(
-                            //         opacity: animation,
-                            //         child: child,
-                            //       );
-                            //     },
-                            //     pageBuilder: (
-                            //       BuildContext context,
-                            //       Animation<double> animation,
-                            //       Animation<double> secondaryAnimation,
-                            //     ) {
-                            //       return HomeScreen();
-                            //     },
-                            //   ),
-                            // );
                           }
                         },
                         child: Text(

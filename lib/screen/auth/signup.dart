@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import '../chat.dart';
+import '../../redux/app_state.dart';
 import '../../model/auth/signup_model.dart';
 import '../../services/auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../animation/FadeAnimation.dart';
 import '../../route/routes.dart';
 
@@ -39,16 +41,38 @@ class _SignupScreen extends State<SignupScreen> {
       print("NULL RESPONSE!");
     } else {
       print("SIGNIN :D");
-      print(res.uid);
       FirebaseFirestore.instance
-          .collection('uesr')
+          .collection('user')
           .doc(res.uid)
           .set({'email': res.email});
+      Navigator.of(context).push(
+        PageRouteBuilder(
+          transitionDuration: Duration(milliseconds: 900),
+          transitionsBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+            Widget child,
+          ) {
+            return FadeTransition(
+              opacity: animation,
+              child: child,
+            );
+          },
+          pageBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+          ) {
+            return ChatScreen();
+          },
+        ),
+      );
     }
   }
 
   Widget build(BuildContext context) {
-    return StoreConnector(
+    return StoreConnector<AppState, AppState>(
         converter: (store) => store.state,
         builder: (context, state) {
           return Scaffold(
