@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import './redux/app_state.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -36,7 +37,6 @@ class _AppState extends State<App> {
             store: _store,
             child: MaterialApp(
               debugShowCheckedModeBanner: false,
-              home: AuthScreen(),
               theme: ThemeData(
                 primaryColor: Color(0xFF63D7B4),
                 accentColor: Color(0xFF63D7B4),
@@ -58,6 +58,15 @@ class _AppState extends State<App> {
                         fontWeight: FontWeight.w400,
                       ),
                     ),
+              ),
+              home: StreamBuilder(
+                stream: FirebaseAuth.instance.authStateChanges(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return ChatScreen();
+                  }
+                  return AuthScreen();
+                },
               ),
               routes: {
                 Routes.chat: (context) => ChatScreen(),

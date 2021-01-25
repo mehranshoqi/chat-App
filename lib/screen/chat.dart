@@ -1,14 +1,35 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
+import '../services/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ChatScreen extends StatelessWidget {
-  const ChatScreen({Key key}) : super(key: key);
+  final AuthServices _auth = AuthServices();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('ProductsPage'),
+        actions: <Widget>[
+          DropdownButton(
+            icon: Icon(
+              Icons.more_vert,
+              color: Colors.black,
+            ),
+            items: [
+              DropdownMenuItem(
+                child: Text('log out'),
+                value: 'logout',
+              ),
+            ],
+            onChanged: (itemIndentifier) {
+              if (itemIndentifier == 'logout') {
+                _auth.signout();
+              }
+            },
+          )
+        ],
+      ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection("chats/bdV5JFLpPT7dYH4OoFmU/messages")
